@@ -28,7 +28,7 @@ namespace serving {
 
 class ModelServiceImpl final : public ModelService::Service {
  public:
-  explicit ModelServiceImpl(ServerCore *core) : core_(core) {}
+  explicit ModelServiceImpl(ServerCore *core,const string& config_file) : core_(core) , config_file_(config_file) {}
 
   ::grpc::Status GetModelStatus(::grpc::ServerContext *context,
                                 const GetModelStatusRequest *request,
@@ -40,6 +40,7 @@ class ModelServiceImpl final : public ModelService::Service {
 
  private:
   ServerCore *core_;
+  string config_file_;
 };
 
 }  // namespace serving

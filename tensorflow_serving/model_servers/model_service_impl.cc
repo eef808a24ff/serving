@@ -18,6 +18,7 @@ limitations under the License.
 #include "tensorflow_serving/model_servers/get_model_status_impl.h"
 #include "tensorflow_serving/model_servers/grpc_status_util.h"
 #include "tensorflow_serving/util/status_util.h"
+#include <fstream>
 
 namespace tensorflow {
 namespace serving {
@@ -51,6 +52,17 @@ namespace serving {
                   << "\n\tplatform : " << config.model_platform();
       }
       status = core_->ReloadConfig(server_config);
+	  //std::cout<<"grpc config list:xxxxxxx"<<std::endl;
+      std::string p;
+      google::protobuf::TextFormat::PrintToString(server_config, &p); 
+      std::cout<< p << std::endl;
+      if(config_file_.empty()){
+         config_file_ = "model_config.ini";
+      }   
+      std::fstream fout(config_file_, std::ios::out | std::ios::trunc);
+      fout << p << std::endl;
+      fout.flush();
+      fout.close();
       break;
     }
     default:
